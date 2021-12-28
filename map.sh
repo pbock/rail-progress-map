@@ -1,0 +1,24 @@
+#!/bin/sh
+mapshaper \
+  -graticule interval=5 \
+  -i ne_10m_admin_0_countries/*.shp name=countries \
+  -dissolve target=countries + name=land \
+  -innerlines target=countries + name=borders \
+  -i ne_10m_railroads/*.shp name=rail \
+  -filter "scalerank <= 8" \
+  -i signal-eu-org.geojson name=route \
+  -buffer target=route radius=5000 + name=route-buffer \
+  -erase source=route-buffer target=rail \
+  -style target=land fill="#fff" stroke="#222" stroke-width=0.5 \
+  -style target=borders stroke="#222" stroke-width=0.5 \
+  -style target=rail stroke="#ccc" stroke-width=1 \
+  -style target=graticule stroke="#999" stroke-width=0.5 \
+  -style target=route stroke-width=3 stroke="#c00" \
+  -proj from=wgs84 ESRI:102014 target=graticule,land,borders,rail,route \
+  -rectangle route offset=15% + name=bg \
+  -style bg fill="#eee" \
+  -clip bg target=graticule \
+  -clip bg target=land \
+  -clip bg target=borders \
+  -clip bg target=rail \
+  -o map.svg target=bg,graticule,land,rail,borders,route width=500
