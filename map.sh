@@ -9,16 +9,24 @@ mapshaper \
   -i signal-eu-org.geojson name=route \
   -buffer target=route radius=5000 + name=route-buffer \
   -erase source=route-buffer target=rail \
+  -i track.geojson name=track -lines -buffer 5000 \
+  -clip source=track target=route + name=route-travelled \
+  -erase source=track target=route + name=route-ahead \
   -style target=land fill="#fff" stroke="#222" stroke-width=0.5 \
   -style target=borders stroke="#222" stroke-width=0.5 \
   -style target=rail stroke="#ccc" stroke-width=1 \
   -style target=graticule stroke="#999" stroke-width=0.5 \
+  -style target=route-travelled stroke-width=4 stroke="#c00" \
+  -style target=route-ahead stroke-width=2 stroke="#fff" opacity=0.9 \
   -style target=route stroke-width=3 stroke="#c00" \
-  -proj from=wgs84 ESRI:102014 target=graticule,land,borders,rail,route \
+  -proj from=wgs84 ESRI:102014 target=graticule,land,borders,rail,route,route-ahead,route-travelled \
   -rectangle route offset=15% + name=bg \
   -style bg fill="#eee" \
   -clip bg target=graticule \
   -clip bg target=land \
   -clip bg target=borders \
   -clip bg target=rail \
-  -o map.svg target=bg,graticule,land,rail,borders,route width=500
+  -o map.svg target=bg,graticule,land,rail,borders,route,route-ahead,route-travelled width=500 \
+  -calc "Math.round(sum($.length)) / 1000" target=route \
+  -calc "Math.round(sum($.length)) / 1000" target=route-travelled \
+  -calc "Math.round(sum($.length)) / 1000" target=route-ahead
