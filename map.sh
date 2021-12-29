@@ -5,7 +5,9 @@ mapshaper \
   -graticule interval=5 \
   -i ne_10m_admin_0_countries/*.shp name=countries \
   -dissolve target=countries + name=land \
-  -innerlines target=countries + name=borders \
+  -innerlines target=countries + name=inner-borders \
+  -lines target=land + name=outer-borders \
+  -merge-layers force target=inner-borders,outer-borders name=borders \
   -i ne_10m_railroads/*.shp name=rail \
   -filter "scalerank <= 8" \
   -i signal-eu-org.geojson name=route \
