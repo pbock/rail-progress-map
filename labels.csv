@@ -1,0 +1,9 @@
+label-text,latitude,longitude,text-anchor,dx,dy
+Konstanz,47.659,9.175,start,7,3
+Singen,47.761,8.834,end,-7,3
+Stuttgart,48.778,9.180,start,7,3
+Hamburg,53.550,10.000,start,7,3
+København,55.686,12.570,end,4,-7
+Göteborg,57.707,11.967,end,-7,3
+Oslo,59.913,10.738,middle,0,-7
+Bergen,60.394,5.325,end,-7,3
